@@ -1,81 +1,261 @@
-saldoInicial = 0;
+let movimentacoes = [];
 
-function salvar(renda, gastos) {
-    
-    renda = document.getElementById("renda").value;
-    gastos = document.getElementById("gastos").value;
-    document.getElementById("print_renda").innerHTML = "R$ " + renda;
-    document.getElementById("print_gastos").innerHTML = "R$ " + gastos;
-    document.getElementById("print_saldo").innerHTML = "R$ " + (parseFloat(renda) - parseFloat(gastos)).toFixed(2);
-    saldoInicial = ((parseFloat(renda) - parseFloat(gastos)) / 2).toFixed(2);
-    document.getElementById("print_investimento").innerHTML = "R$ " + saldoInicial;
+function salvarMovimentacoes() {
+    localStorage.setItem(
+        "movimentacoes",
+        JSON.stringify(movimentacoes)
+    );
 }
 
+function carregarMovimentacoes() {
 
-async function investimentoSelic() {
+    const dados = localStorage.getItem("movimentacoes");
 
-    console.log("Investir FOI CHAMADO")
+    if (dados) {
+        movimentacoes = JSON.parse(dados);
+    }
+}
 
-    const response = await fetch("https://api.bcb.gov.br/dados/serie/bcdata.sgs.4189/dados/ultimos/1?formato=json");
-    const selic = await response.json();
+function adicionarMovimentacao() {
 
-    let renda = document.getElementById("renda").value;
-    let gastos = document.getElementById("gastos").value;
+    const descricao = document.getElementById("descricao").value;
+    const valor = parseFloat(document.getElementById("valor").value);
+    const tipo = document.getElementById("tipo").value;
+    const categoria = document.getElementById("categoria").value;
 
-    let sugestao = ((parseFloat(renda) - parseFloat(gastos)) / 2).toFixed(2);
-    sugestao = parseFloat(sugestao);
+    if (!descricao || isNaN(valor) || !tipo || !categoria) {
+        alert("Por favor, preencha todos os campos corretamente.");
+        return;
+    }
 
-    const saldoMensal = sugestao;
-    const anos = parseInt(document.getElementById("anos").value);
-
-    const ERRO = {
-      CAMPOS_INVALIDOS: "Preencha os campos de renda e gastos corretamente!",
-      SUGESTAO_NEGATIVA: "A sugestão de investimento deve ser um valor positivo! Sugiro revisar seus gastos para aumentar o valor disponível para investimento.",
-      ANOS_INVALIDOS: "Coloque os anos de investimento pretendido corretamente!"
+    const movimentacao = {
+        descricao,
+        valor,
+        tipo,
+        categoria
     };
 
-    if (isNaN(sugestao)) {
-        mostrarErro(ERRO.CAMPOS_INVALIDOS);
+    movimentacoes.push(movimentacao);
+
+    atualizarListaMovimentacoes();
+    salvarMovimentacoes();
+    atualizarDashboard();
+}
+
+function atualizarListaMovimentacoes() {
+
+    const lista = document.getElementById("listaMovimentacoes");
+
+    if (!lista) {
         return;
     }
 
-    if (sugestao <= 0) {
-        mostrarErro(ERRO.SUGESTAO_NEGATIVA );
+    lista.innerHTML = "";
+
+    if (movimentacoes.length === 0) {
+        lista.innerHTML = "<p>Nenhuma movimentação cadastrada.</p>";
         return;
     }
 
-    if (isNaN(anos) || anos <= 0) {
-        mostrarErro(ERRO.ANOS_INVALIDOS);
+    movimentacoes.forEach((mov, index) => {
+
+        const item = document.createElement("div");
+
+        item.className = "movimentacao";
+
+        const tipoTexto =
+    mov.tipo === "receita" ? "↑ Receita" : "↓ Despesa";
+
+    item.className = `movimentacao ${mov.tipo}`;
+
+    item.innerHTML = `
+        <h3 class="texto_centralizado">
+            ${mov.descricao}
+        </h3>
+
+        <p class="valor_centralizado">
+            R$ ${mov.valor.toFixed(2)}
+        </p>
+
+        <br>
+
+        <p class="texto_centralizado">
+            <strong>${tipoTexto}</strong>: ${mov.categoria}
+        </p>
+
+        <div class="buttons center">
+            <button
+                class="btn limpar"
+                onclick="removerMovimentacao(${index})"
+            >
+                Remover
+            </button>
+        </div>
+    `;
+
+        lista.appendChild(item);
+    });
+}
+
+function removerMovimentacao(index) {
+    movimentacoes.splice(index, 1);
+    salvarMovimentacoes();
+    atualizarListaMovimentacoes();
+    atualizarDashboard();
+}
+
+function limparMovimentacoes() {
+    movimentacoes = [];
+    salvarMovimentacoes();
+    atualizarListaMovimentacoes();
+    atualizarDashboard();
+}
+
+function atualizarDashboard() {
+
+    let renda = 0;
+    let gastos = 0;
+
+    movimentacoes.forEach(function(mov) {
+
+        if (mov.tipo === "receita") {
+            renda += mov.valor;
+        }
+
+        if (mov.tipo === "despesa") {
+            gastos += mov.valor;
+        }
+
+    });
+
+    const saldoRestante = renda - gastos;
+    const investimento = saldoRestante / 2;
+
+
+    const printRenda = document.getElementById("print_renda");
+    const printGastos = document.getElementById("print_gastos");
+    const printSaldo = document.getElementById("print_saldo");
+    const printInvestimento = document.getElementById("print_investimento");
+
+
+    if (printRenda) {
+        printRenda.innerHTML = "R$ " + renda.toFixed(2);
+    }
+
+    if (printGastos) {
+        printGastos.innerHTML = "R$ " + gastos.toFixed(2);
+    }
+
+    if (printSaldo) {
+        printSaldo.innerHTML = "R$ " + saldoRestante.toFixed(2);
+    }
+
+    if (printInvestimento) {
+        printInvestimento.innerHTML = "R$ " + investimento.toFixed(2);
+    }
+}
+
+function calcularInvestimento() {
+
+    const valorInicial = parseFloat(
+        document.getElementById("valorInicial").value
+    );
+
+    const aporteMensal = parseFloat(
+        document.getElementById("aporteMensal").value
+    );
+
+    const taxaAnual = parseFloat(
+        document.getElementById("taxaAnual").value
+    );
+
+    const anos = parseInt(
+        document.getElementById("periodo").value
+    );
+
+
+    if (
+        isNaN(valorInicial) ||
+        isNaN(aporteMensal) ||
+        isNaN(taxaAnual) ||
+        isNaN(anos)
+    ) {
+        alert("Preencha todos os campos corretamente.");
         return;
     }
 
-    let saldo = sugestao;
+
+    if (
+        valorInicial < 0 ||
+        aporteMensal < 0 ||
+        taxaAnual < 0 ||
+        anos <= 0
+    ) {
+        alert("Digite valores válidos.");
+        return;
+    }
+
+
+    const taxaMensal =
+        Math.pow(1 + taxaAnual / 100, 1 / 12) - 1;
+
+
     const meses = anos * 12;
 
-    const porcentagemSelicMes = parseFloat(selic[0].valor) / 12;
+
+    let saldo = valorInicial;
+
 
     let historico = [];
 
     historico.push(saldo);
 
+
     for (let i = 0; i < meses; i++) {
 
-        saldo = saldo + saldoMensal + (porcentagemSelicMes / 100 * saldo);
+        saldo = saldo * (1 + taxaMensal);
+
+        saldo += aporteMensal;
 
         historico.push(saldo);
-
     }
+
+
+    const valorInvestido =
+        valorInicial + (aporteMensal * meses);
+
+
+    const rendimentos =
+        saldo - valorInvestido;
+
+
+    document.getElementById("valorInvestido").textContent =
+        formatarMoeda(valorInvestido);
+
+    document.getElementById("rendimentos").textContent =
+        formatarMoeda(rendimentos);
+
+    document.getElementById("valorFinal").textContent =
+        formatarMoeda(saldo);
+
 
     let labels = [];
 
-    for (let i = 0; i < historico.length; i++) {
-
+    for (let i = 0; i <= meses; i++) {
         labels.push("Mês " + i);
-
     }
 
-    criarGrafico(labels, historico);
 
+    criarGrafico(labels, historico);
+}
+
+
+function formatarMoeda(valor) {
+
+    return valor.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
 }
 
 
@@ -140,3 +320,9 @@ function mostrarErro(msg) {
         resultado.textContent = "";
     }, 10000); // desaparece em 10 segundos
 }
+
+carregarMovimentacoes();
+
+atualizarListaMovimentacoes();
+
+atualizarDashboard();

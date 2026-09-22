@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Controle Financeiro</title>
+
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
 </head>
 
 <body>
 
 <div class="container">
-
 
     <aside class="sidebar">
 
@@ -37,36 +40,88 @@
 
             <div class="form">
 
-                <label>Descrição</label>
-                <input id="descricao" type="text" placeholder="Ex: Supermercado">
+                <label for="descricao">Descrição</label>
 
-                <label>Valor</label>
-                <input id="valor" type="number" placeholder="Digite o valor">
+                <input
+                    id="descricao"
+                    type="text"
+                    placeholder="Ex: Salário, aluguel, supermercado..."
+                >
 
-                <label>Tipo</label>
+
+                <label for="valor">Valor</label>
+
+                <input
+                    id="valor"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="Digite o valor"
+                >
+
+
+                <label for="tipo">Tipo</label>
+
                 <select id="tipo">
-                    <option value="receita">Receita</option>
-                    <option value="despesa">Despesa</option>
+
+                    <option value="receita">
+                        Receita
+                    </option>
+
+                    <option value="despesa">
+                        Despesa
+                    </option>
+
                 </select>
 
-                <label>Categoria</label>
-                <select id="categoria">
-                    <option value="alimentacao">Alimentação</option>
-                    <option value="transporte">Transporte</option>
-                    <option value="moradia">Moradia</option>
-                    <option value="lazer">Lazer</option>
-                    <option value="educacao">Educação</option>
-                    <option value="outros">Outros</option>
+
+                <label for="categoria">Categoria</label>
+
+                <select id="categoria" class="form select">
+
+                    <option value="salario">
+                        Salário
+                    </option>
+
+                    <option value="alimentacao">
+                        Alimentação
+                    </option>
+
+                    <option value="moradia">
+                        Moradia
+                    </option>
+
+                    <option value="transporte">
+                        Transporte
+                    </option>
+
+                    <option value="lazer">
+                        Lazer
+                    </option>
+
+                    <option value="educacao">
+                        Educação
+                    </option>
+
+                    <option value="investimentos">
+                        Investimentos
+                    </option>
+
+                    <option value="outros">
+                        Outros
+                    </option>
+
                 </select>
 
-                <div class="buttons">
 
-                    <button type="button" class="btn salvar" onclick="adicionarMovimentacao()">
+                <div class="buttons center">
+
+                    <button
+                        type="button"
+                        class="btn salvar"
+                        onclick="adicionarMovimentacao()"
+                    >
                         Adicionar
-                    </button>
-
-                    <button type="button" class="btn carregar" onclick="carregarMovimentacoes()">
-                        Carregar
                     </button>
 
                 </div>
@@ -75,12 +130,17 @@
 
         </section>
 
+
         <section class="form-section">
 
             <h2>Movimentações</h2>
 
-            <div id="listaMovimentacoes">
+            <br>
+
+            <div class="lista-movimentacoes" id="listaMovimentacoes">
+                
                 <p>Nenhuma movimentação cadastrada.</p>
+
             </div>
 
         </section>
@@ -89,7 +149,10 @@
 
 </div>
 
+
 <script src="script.js"></script>
 
 </body>
+
 </html>
+

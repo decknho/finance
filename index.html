@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Financeiro</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard Financeiro</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
 </head>
 
 <body>
 
 <div class="container">
-
 
     <aside class="sidebar">
 
@@ -19,7 +22,7 @@
         <nav>
             <a href="index.html">Dashboard</a>
             <a href="controle.html">Controle</a>
-            <a href="simulador.html">Simulador Detalhado</a>
+            <a href="simulador.html">Simulador</a>
             <a href="educacao.html">Educação</a>
         </nav>
 
@@ -28,91 +31,247 @@
     <main class="main">
 
         <header class="header">
-            <h1>Controle Financeiro</h1>
+
+            <h1>Dashboard Financeiro</h1>
+
+            
+
         </header>
 
-        <!-- CARDS -->
+        <div id="dashboard">
 
-        <section class="cards">
+            <section class="cards">
 
-            <div class="card">
-                <h3>Renda</h3>
-                <p id="print_renda">R$ 0</p>
-            </div>
+                <div class="card">
 
-            <div class="card">
-                <h3>Gastos</h3>
-                <p id="print_gastos">R$ 0</p>
-            </div>
+                    <h3>Renda</h3>
 
-            <div class="card">
-                <h3>Saldo restante</h3>
-                <p id="print_saldo">R$ 0</p>
-            </div>
-
-            <div class="card destaque">
-                <h3>Investimento sugerido</h3>
-                <p id="print_investimento">R$ 0</p>
-            </div>
-
-        </section>
-
-        <section class="form-section">
-
-            <h2>Inserir dados</h2>
-
-            <div class="form">
-
-                <label>Renda mensal</label>
-                <input id="renda" type="number" placeholder="Digite sua renda">
-
-                <label>Gastos mensais</label>
-                <input id="gastos" type="number" placeholder="Digite seus gastos">
-
-                <div class="buttons">
-
-                    <button type="button" class="btn salvar" onclick="salvar()">Salvar</button>
-                    <button type="button" class="btn carregar">Carregar</button>
-                    <button type="button" class="btn exportar">Exportar</button>
+                    <p id="print_renda">
+                        R$ 0,00
+                    </p>
 
                 </div>
 
+
+                <div class="card">
+
+                    <h3>Gastos</h3>
+
+                    <p id="print_gastos">
+                        R$ 0,00
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>Saldo restante</h3>
+
+                    <p id="print_saldo">
+                        R$ 0,00
+                    </p>
+
+                </div>
+
+
+                <div class="card destaque">
+
+                    <h3>Investimento sugerido</h3>
+
+                    <p id="print_investimento">
+                        R$ 0,00
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <section class="form-section">
+
+                <h2>Filtros</h2>
+
+                <div class="form">
+
+                    <label for="filtroCategoria">
+                        Categoria
+                    </label>
+
+                    <select id="filtroCategoria">
+
+                        <option value="todas">
+                            Todas
+                        </option>
+
+                        <option value="salario">
+                            Salário
+                        </option>
+
+                        <option value="alimentacao">
+                            Alimentação
+                        </option>
+
+                        <option value="moradia">
+                            Moradia
+                        </option>
+
+                        <option value="transporte">
+                            Transporte
+                        </option>
+
+                        <option value="lazer">
+                            Lazer
+                        </option>
+
+                        <option value="educacao">
+                            Educação
+                        </option>
+
+                        <option value="investimentos">
+                            Investimentos
+                        </option>
+
+                        <option value="outros">
+                            Outros
+                        </option>
+
+                    </select>
+
+
+                    <label for="filtroTipo">
+                        Tipo
+                    </label>
+
+                    <select id="filtroTipo">
+
+                        <option value="todos">
+                            Todos
+                        </option>
+
+                        <option value="receita">
+                            Receitas
+                        </option>
+
+                        <option value="despesa">
+                            Despesas
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="buttons center">
+
+                    <button
+                        type="button"
+                        class="btn aplicarFiltros"
+                        onclick="aplicarFiltros()"
+                    >
+                        Aplicar filtros
+                    </button>
                 
+                </div>
 
+            </section>
+
+
+            <section class="charts">
+
+                <div class="chart-box">
+
+                    <h3>
+                        Distribuição de gastos
+                    </h3>
+
+                    <div class="chart-placeholder">
+
+                        <canvas id="graficoGastos"></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chart-box">
+
+                    <h3>
+                        Receitas x Despesas
+                    </h3>
+
+                    <div class="chart-placeholder">
+
+                        <canvas id="graficoReceitasDespesas"></canvas>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+            </br>
+
+            <section class="charts">
+
+                <div class="chart-box">
+
+                    <h3>
+                        Evolução do saldo
+                    </h3>
+
+                    <div class="chart-placeholder">
+
+                        <canvas id="graficoSaldo"></canvas>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            </br>
+
+            <section class="form-section">
+
+                <h2>
+                    Últimas movimentações
+                </h2>
+
+                <div id="ultimasMovimentacoes">
+
+                    <p>
+                        Nenhuma movimentação cadastrada.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <div class="buttons center">
+                <button
+                    type="button"
+                    class="btn exportar"
+                    onclick="exportarDashboard()"
+                >
+                    Exportar PNG
+                </button>
             </div>
 
-        </section>
-
-        <section class="charts">
-
-            <div class="chart-box">
-                <h3>Distribuição de gastos</h3>
-                <div class="chart-placeholder">
-                    <canvas id="graficoGastos"></canvas>
-                </div>
-            </div>
-
-            <div class="chart-box">
-                <h3>Simulação de investimento</h3>
-
-                <div class="chart-placeholder investimento">
-                    <canvas id="graficoInvestimento"></canvas>
-                </div>
-                <br>
-                <div class="texto_centralizado">
-                    <input id="anos" type="number" class="scanner" placeholder="Digite o número de anos">
-                    <button type="button" class="btn calcular" onclick="investimentoSelic()">Calcular</button>
-                </div>
-                
-                <p class="texto_centralizado" id="resultado"></p>
-            </div>
-
-        </section>
+        </div>
 
     </main>
 
 </div>
-<script src="script.js"></script>
+
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<script src="script.js"></script>
+
 </body>
+
 </html>

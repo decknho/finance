@@ -108,10 +108,20 @@ border-radius:6px;
 border:1px solid #ccc;
 }
 
+.form select{
+padding:10px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
 .buttons{
 margin-top:10px;
 display:flex;
 gap:10px;
+}
+
+.buttons.center{
+    justify-content: center;
 }
 
 /* Botões e Inputs */
@@ -142,6 +152,17 @@ color:white;
 .calcular {
 background:#ef4444;
 color:white;
+}
+
+.limpar {
+background:#f87171;
+color:white;
+}
+
+.aplicarFiltros {
+background:#3b82f6;
+color:white;
+
 }
 
 .scanner {
@@ -176,12 +197,78 @@ color:#888;
 margin-top:10px;
 }
 
+#listaMovimentacoes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.movimentacao {
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+}
+
 /* Texto */
 
 .texto_centralizado{
     text-align: center;
 }
 
+/* Movimentação */
+.movimentacao {
+    position: relative;
+    padding: 20px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.movimentacao:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.10);
+}
+
+.movimentacao.receita {
+    border-top: 4px solid #2ecc71;
+}
+
+.movimentacao.despesa {
+    border-top: 4px solid #e74c3c;
+}
+
+.movimentacao h3 {
+    margin: 0 0 18px 0;
+    font-size: 20px;
+}
+
+.movimentacao .valor {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.movimentacao .valor_centralizado {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.movimentacao.receita .valor {
+    color: #2ecc71;
+}
+.movimentacao.receita .valor_centralizado {
+    color: #2ecc71;
+}
+
+.movimentacao.despesa .valor_centralizado {
+    color: #e74c3c;
+}
+
+.movimentacao.despesa .valor {
+    color: #e74c3c;
+}
 /* Responsividade */
 @media (max-width: 768px) {
     .container {

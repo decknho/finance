@@ -1,0 +1,104 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Financeiro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <h2 class="logo">Finance</h2>
+
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="controle.html">Controle</a>
+            <a href="simulador.html">Simulador</a>
+            <a href="educacao.html">Educação</a>
+        </nav>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <header class="header">
+            <h1>Controle Financeiro</h1>
+        </header>
+
+        <!-- FORMULÁRIO -->
+
+        <section class="form-section">
+
+            <h2>Adicionar movimentação</h2>
+
+            <div class="form">
+
+                <label>Descrição</label>
+                <input id="descricao" type="text" placeholder="Ex: Supermercado">
+
+                <label>Valor</label>
+                <input id="valor" type="number" placeholder="Digite o valor">
+
+                <label>Tipo</label>
+                <select id="tipo">
+                    <option value="receita">Receita</option>
+                    <option value="despesa">Despesa</option>
+                </select>
+
+                <label>Categoria</label>
+                <select id="categoria">
+                    <option value="alimentacao">Alimentação</option>
+                    <option value="transporte">Transporte</option>
+                    <option value="moradia">Moradia</option>
+                    <option value="lazer">Lazer</option>
+                    <option value="educacao">Educação</option>
+                    <option value="outros">Outros</option>
+                </select>
+
+                <div class="buttons">
+
+                    <button type="button" class="btn salvar" onclick="adicionarMovimentacao()">
+                        Adicionar
+                    </button>
+
+                    <button type="button" class="btn carregar" onclick="carregarMovimentacoes()">
+                        Carregar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- LISTA -->
+
+        <section class="form-section">
+
+            <h2>Movimentações</h2>
+
+            <div id="listaMovimentacoes">
+                <p>Nenhuma movimentação cadastrada.</p>
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+```

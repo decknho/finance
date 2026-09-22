@@ -155,6 +155,43 @@ function atualizarDashboard() {
     }
 }
 
+
+function ultimasMovimentacoes() {
+    const lista = document.getElementById("listaMovimentacoes");
+
+    if (!lista) {
+        return;
+    }
+
+    lista.innerHTML = "";
+
+    const ultimas = movimentacoes.slice(-5).reverse();
+
+    if (ultimas.length === 0) {
+        lista.innerHTML = "<p>Nenhuma movimentação cadastrada.</p>";
+        return;
+    }
+
+    ultimas.forEach((mov) => {
+        const index = movimentacoes.indexOf(mov);
+        const item = document.createElement("div");
+        const tipoTexto = mov.tipo === "receita" ? "↑ Receita" : "↓ Despesa";
+
+        item.className = `movimentacao ${mov.tipo}`;
+        item.innerHTML = `
+            <h3 class="texto_centralizado">${mov.descricao}</h3>
+            <p class="valor_centralizado">R$ ${mov.valor.toFixed(2)}</p>
+            <br>
+            <p class="texto_centralizado"><strong>${tipoTexto}</strong>: ${mov.categoria}</p>
+            <div class="buttons center">
+                <button class="btn limpar" onclick="removerMovimentacao(${index})">Remover</button>
+            </div>
+        `;
+
+        lista.appendChild(item);
+    });
+}
+
 function calcularInvestimento() {
 
     const valorInicial = parseFloat(

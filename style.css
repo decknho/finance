@@ -209,6 +209,17 @@ margin-top:10px;
     background-color: #f5f5f5;
 }
 
+#ultimasMovimentacoes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+#ultimasMovimentacoes .movimentacao {
+    width: auto;
+    box-sizing: border-box;
+}
+
 /* Texto */
 
 .texto_centralizado{

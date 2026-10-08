@@ -6,9 +6,7 @@ let graficoSaldo;
 let graficoInvestimento;
 
 
-// ======================================================
 // LOCAL STORAGE
-// ======================================================
 
 function salvarMovimentacoes() {
 
@@ -29,9 +27,7 @@ function carregarMovimentacoes() {
 }
 
 
-// ======================================================
 // ADICIONAR MOVIMENTAÇÃO
-// ======================================================
 
 function adicionarMovimentacao() {
 
@@ -67,9 +63,7 @@ function adicionarMovimentacao() {
 }
 
 
-// ======================================================
 // LISTA DE MOVIMENTAÇÕES
-// ======================================================
 
 function atualizarListaMovimentacoes() {
 
@@ -142,9 +136,7 @@ function atualizarListaMovimentacoes() {
 }
 
 
-// ======================================================
 // REMOVER MOVIMENTAÇÃO
-// ======================================================
 
 function removerMovimentacao(index) {
 
@@ -159,9 +151,7 @@ function removerMovimentacao(index) {
 }
 
 
-// ======================================================
 // LIMPAR TODAS AS MOVIMENTAÇÕES
-// ======================================================
 
 function limparMovimentacoes() {
 
@@ -176,9 +166,7 @@ function limparMovimentacoes() {
 }
 
 
-// ======================================================
 // DASHBOARD
-// ======================================================
 
 function atualizarDashboard(dados = movimentacoes) {
 
@@ -266,9 +254,7 @@ function atualizarDashboard(dados = movimentacoes) {
 }
 
 
-// ======================================================
 // ÚLTIMAS MOVIMENTAÇÕES
-// ======================================================
 
 function atualizarUltimasMovimentacoes(
     dados = movimentacoes
@@ -339,9 +325,7 @@ function atualizarUltimasMovimentacoes(
 }
 
 
-// ======================================================
 // SIMULADOR DE INVESTIMENTO
-// ======================================================
 
 function calcularInvestimento() {
 
@@ -488,9 +472,7 @@ function calcularInvestimento() {
 }
 
 
-// ======================================================
 // FORMATAÇÃO DE MOEDA
-// ======================================================
 
 function formatarMoeda(valor) {
 
@@ -505,9 +487,7 @@ function formatarMoeda(valor) {
 }
 
 
-// ======================================================
 // GRÁFICO DO SIMULADOR
-// ======================================================
 
 function criarGraficoInvestimento(
     labels,
@@ -607,9 +587,7 @@ function criarGraficoInvestimento(
 }
 
 
-// ======================================================
 // CRIAR OS 3 GRÁFICOS DO DASHBOARD
-// ======================================================
 
 function criarGraficos(
     dados = movimentacoes
@@ -624,9 +602,7 @@ function criarGraficos(
 }
 
 
-// ======================================================
 // GRÁFICO - DISTRIBUIÇÃO DE GASTOS
-// ======================================================
 
 function criarGraficoGastos(
     dados = movimentacoes
@@ -730,9 +706,7 @@ function criarGraficoGastos(
 }
 
 
-// ======================================================
 // GRÁFICO - RECEITAS X DESPESAS
-// ======================================================
 
 function criarGraficoReceitasDespesas(
     dados = movimentacoes
@@ -827,9 +801,7 @@ function criarGraficoReceitasDespesas(
 }
 
 
-// ======================================================
 // GRÁFICO - EVOLUÇÃO DO SALDO
-// ======================================================
 
 function criarGraficoSaldo(
     dados = movimentacoes
@@ -932,9 +904,7 @@ function criarGraficoSaldo(
 }
 
 
-// ======================================================
 // MENSAGEM DE ERRO
-// ======================================================
 
 function mostrarErro(msg) {
 
@@ -962,9 +932,7 @@ function mostrarErro(msg) {
 }
 
 
-// ======================================================
 // FILTROS DO DASHBOARD
-// ======================================================
 
 function aplicarFiltros() {
 
@@ -1058,9 +1026,7 @@ function resetarInvestimento() {
 }
 
 
-// ======================================================
 // CARREGAMENTO INICIAL
-// ======================================================
 
 carregarMovimentacoes();
 
@@ -1071,3 +1037,257 @@ atualizarDashboard();
 atualizarUltimasMovimentacoes();
 
 criarGraficos();
+
+
+
+/* ========================================
+   EXPORTAÇÃO DO DASHBOARD
+======================================== */
+
+/**
+ * Prepara uma imagem do Dashboard.
+ * O elemento #dashboard contém os indicadores,
+ * gráficos e movimentações.
+ */
+async function capturarDashboard() {
+    const dashboard = document.getElementById("dashboard");
+
+    if (!dashboard) {
+        throw new Error("Dashboard não encontrado.");
+    }
+
+    if (typeof html2canvas === "undefined") {
+        throw new Error("A biblioteca html2canvas não foi carregada.");
+    }
+
+    await document.fonts.ready;
+
+    // Cria uma cópia exclusiva para exportação.
+    const relatorio = dashboard.cloneNode(true);
+
+        /*
+    * Copia os desenhos dos gráficos Chart.js
+    * para os canvases da versão exportada.
+    */
+
+    const canvasesOriginais = dashboard.querySelectorAll("canvas");
+    const canvasesCopiados = relatorio.querySelectorAll("canvas");
+
+    canvasesOriginais.forEach((original, indice) => {
+        const copia = canvasesCopiados[indice];
+
+        if (!copia) return;
+
+        // Preserva as dimensões originais do canvas.
+        copia.width = original.width;
+        copia.height = original.height;
+
+        copia.style.width = original.style.width;
+        copia.style.height = original.style.height;
+
+        // Copia o gráfico sem deformar sua proporção.
+        const contexto = copia.getContext("2d");
+
+        if (contexto) {
+            contexto.drawImage(
+                original,
+                0,
+                0,
+                original.width,
+                original.height
+            );
+        }
+    });
+
+    // Remove filtros e últimas movimentações.
+    relatorio.querySelectorAll(".form-section").forEach(secao => {
+        secao.remove();
+    });
+
+    // Remove botões que possam estar dentro do Dashboard.
+    relatorio.querySelectorAll(
+        ".buttons, .export-actions, button"
+    ).forEach(elemento => {
+        elemento.remove();
+    });
+
+    // Cria a identidade visual do relatório.
+    const cabecalho = document.createElement("div");
+    cabecalho.className = "report-header";
+
+    cabecalho.innerHTML = `
+        <div class="report-brand">
+            <span class="report-logo" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+
+            <div>
+                <h1>Finance<span>.</span></h1>
+                <p>Relatório financeiro</p>
+            </div>
+        </div>
+
+        <div class="report-date">
+            <span>Gerado em</span>
+            <strong>${new Date().toLocaleDateString("pt-BR")}</strong>
+        </div>
+    `;
+
+    relatorio.prepend(cabecalho);
+
+    // Moldura branca e espaçamento do relatório.
+    const moldura = document.createElement("div");
+    moldura.className = "report-frame";
+    moldura.appendChild(relatorio);
+
+    // Renderiza fora da tela, sem modificar o layout original.
+    moldura.style.position = "fixed";
+    moldura.style.left = "-100000px";
+    moldura.style.top = "0";
+    moldura.style.width = "1200px";
+    moldura.style.padding = "0";
+    moldura.style.background = "#f3f6fb";
+    moldura.style.zIndex = "-1";
+
+    document.body.appendChild(moldura);
+
+    try {
+        await new Promise(resolve => {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(resolve);
+            });
+        });
+
+        return await html2canvas(moldura, {
+            scale: 2,
+            backgroundColor: "#f3f6fb",
+            useCORS: true,
+            logging: false,
+            width: 1200,
+            windowWidth: 1200
+        });
+    } finally {
+        moldura.remove();
+    }
+}
+
+
+/**
+ * Exporta o Dashboard como PNG.
+ */
+async function exportarDashboard() {
+    try {
+        const canvas = await capturarDashboard();
+
+        const link = document.createElement("a");
+
+        link.download = "finance-dashboard.png";
+        link.href = canvas.toDataURL("image/png");
+
+        link.click();
+
+    } catch (erro) {
+        console.error("Erro ao exportar PNG:", erro);
+        alert("Não foi possível exportar o PNG. Tente novamente.");
+    }
+}
+
+
+/**
+ * Exporta o Dashboard como PDF A4 horizontal.
+ * Se o conteúdo for muito comprido, divide
+ * a imagem em páginas automaticamente.
+ */
+async function exportarPDF() {
+    try {
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+            throw new Error("A biblioteca jsPDF não foi carregada.");
+        }
+
+        const canvas = await capturarDashboard();
+
+        const { jsPDF } = window.jspdf;
+
+        const pdf = new jsPDF({
+            orientation: "landscape",
+            unit: "mm",
+            format: "a4",
+            compress: true
+        });
+
+        const larguraPagina = 297;
+        const alturaPagina = 210;
+        const margem = 8;
+
+        const larguraUtil = larguraPagina - margem * 2;
+        const alturaUtil = alturaPagina - margem * 2;
+
+        // Converte a largura útil do PDF em pixels.
+        const escala = canvas.width / larguraUtil;
+
+        // Altura máxima de imagem que cabe em cada página.
+        const alturaFatia = Math.floor(alturaUtil * escala);
+
+        let inicio = 0;
+        let primeiraPagina = true;
+
+        while (inicio < canvas.height) {
+            const alturaAtual = Math.min(
+                alturaFatia,
+                canvas.height - inicio
+            );
+
+            const fatia = document.createElement("canvas");
+
+            fatia.width = canvas.width;
+            fatia.height = alturaAtual;
+
+            const contexto = fatia.getContext("2d");
+
+            if (!contexto) {
+                throw new Error("Não foi possível processar a imagem.");
+            }
+
+            contexto.fillStyle = "#f5f8fc";
+            contexto.fillRect(0, 0, fatia.width, fatia.height);
+
+            contexto.drawImage(
+                canvas,
+                0, inicio,
+                canvas.width, alturaAtual,
+                0, 0,
+                canvas.width, alturaAtual
+            );
+
+            if (!primeiraPagina) {
+                pdf.addPage("a4", "landscape");
+            }
+
+            const imagem = fatia.toDataURL("image/jpeg", 0.92);
+
+            const alturaImagem = alturaAtual / escala;
+
+            pdf.addImage(
+                imagem,
+                "JPEG",
+                margem,
+                margem,
+                larguraUtil,
+                alturaImagem,
+                undefined,
+                "FAST"
+            );
+
+            inicio += alturaAtual;
+            primeiraPagina = false;
+        }
+
+        pdf.save("finance-relatorio.pdf");
+
+    } catch (erro) {
+        console.error("Erro ao exportar PDF:", erro);
+        alert("Não foi possível exportar o PDF. Tente novamente.");
+    }
+}

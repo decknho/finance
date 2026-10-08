@@ -221,21 +221,18 @@
             </br>
 
             <section class="charts">
-
-                <div class="chart-box">
-
-                    <h3>
-                        Evolução do saldo
-                    </h3>
-
-                    <div class="chart-placeholder">
-
-                        <canvas id="graficoSaldo"></canvas>
-
+                <div class="chart-box chart-wide">
+                    <div class="chart-header">
+                        <div>
+                            <h3>Evolução do saldo</h3>
+                            <p>Acompanhe a variação do seu saldo.</p>
+                        </div>
                     </div>
 
+                    <div class="chart-placeholder">
+                        <canvas id="graficoSaldo"></canvas>
+                    </div>
                 </div>
-
             </section>
 
             </br>
@@ -258,16 +255,29 @@
 
             </section>
 
-
+        
             <div class="buttons center">
-                <button
-                    type="button"
-                    class="btn exportar"
-                    onclick="exportarDashboard()"
-                >
-                    Exportar PNG
-                </button>
+            
+                <div class="export-actions">
+                    <button
+                        type="button"
+                        class="btn exportar"
+                        onclick="exportarDashboard()"
+                    >
+                        <span>↓</span> Exportar PNG
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn salvar"
+                        onclick="exportarPDF()"
+                    >
+                        <span>▤</span> Exportar PDF
+                    </button>
+                </div>
+
             </div>
+
 
         </div>
 
@@ -280,7 +290,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
 <script src="script.js"></script>
+
 
 </body>
 

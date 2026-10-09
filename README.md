@@ -2,7 +2,7 @@
 
 O **Finance** é um projeto desenvolvido como parte da disciplina **Atividade Extensionista**, do curso de Ciência da Computação da Uninter. A aplicação tem como objetivo auxiliar na organização das finanças pessoais e promover o acesso à educação financeira, incluindo conceitos relacionados a investimentos sustentáveis.
 
-🌐 **Acesse o projeto:** [Finance — Acessar aplicação](COLE_AQUI_O_LINK_DO_GITHUB_PAGES)
+🌐 **Acesse o projeto:** [Finance — Acessar aplicação](https://deckn.github.io/finance/)
 
 ## 🎯 Objetivo
 

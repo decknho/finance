@@ -3,121 +3,749 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Educação Financeira</title>
+
+    <title>Educação Financeira | Finance</title>
+
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📚%3C/text%3E%3C/svg%3E">
+
+    <style>
+        /* Estrutura da biblioteca */
+        .education-library {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            padding-bottom: 32px;
+        }
+
+        .education-intro {
+            padding: 32px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #153c32, #26785b);
+            color: #ffffff;
+        }
+
+        .education-intro .eyebrow {
+            margin: 0 0 10px;
+            color: #bdebd0;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .education-intro h2 {
+            margin: 0 0 14px;
+            font-size: clamp(24px, 4vw, 32px);
+        }
+
+        .education-intro p {
+            max-width: 720px;
+            line-height: 1.8;
+            color: #e4f2eb;
+        }
+
+        .section-heading {
+            margin-bottom: 18px;
+        }
+
+        .section-heading h2 {
+            margin-bottom: 8px;
+        }
+
+        .section-heading p {
+            color: var(--text-secondary, #777777);
+            line-height: 1.6;
+        }
+
+        /* Navegação pelos conceitos */
+        .topic-navigation {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .topic-link {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 18px;
+            border: 1px solid var(--border-color, #e5e7eb);
+            border-radius: 12px;
+            color: inherit;
+            text-decoration: none;
+            background: var(--card-bg, #ffffff);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .topic-link:hover {
+            transform: translateY(-3px);
+            border-color: #26785b;
+        }
+
+        .topic-icon {
+            font-size: 25px;
+        }
+
+        .topic-link strong {
+            font-size: 15px;
+        }
+
+        .topic-link span:last-child {
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-secondary, #777777);
+        }
+
+        /* Artigos */
+        .education-article {
+            padding: 28px;
+            border: 1px solid var(--border-color, #e5e7eb);
+            border-radius: 14px;
+            background: var(--card-bg, #ffffff);
+            scroll-margin-top: 24px;
+        }
+
+        .article-label {
+            display: inline-block;
+            margin-bottom: 12px;
+            color: #26785b;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .education-article h2 {
+            margin: 0 0 16px;
+        }
+
+        .education-article h3 {
+            margin: 26px 0 10px;
+            font-size: 18px;
+        }
+
+        .education-article p {
+            margin: 0 0 14px;
+            line-height: 1.8;
+            color: var(--text-secondary, #555555);
+        }
+
+        .education-article ul {
+            padding-left: 22px;
+            margin: 12px 0 18px;
+        }
+
+        .education-article li {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        /* Caixas explicativas */
+        .example-box {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+            background: #edf7f0;
+            border-left: 4px solid #26785b;
+            color: #234b37;
+        }
+
+        .example-box h3 {
+            margin: 0 0 12px;
+        }
+
+        .example-box p {
+            color: #315943;
+        }
+
+        .example-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .concept-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin: 18px 0;
+        }
+
+        .concept-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .concept-table th,
+        .concept-table td {
+            padding: 13px 14px;
+            border-bottom: 1px solid var(--border-color, #e5e7eb);
+        }
+
+        .concept-table th {
+            background: var(--table-header-bg, #f5f7f6);
+        }
+
+        .concept-table td {
+            line-height: 1.6;
+        }
+
+        .formula-box {
+            margin: 18px 0;
+            padding: 18px;
+            border-radius: 10px;
+            background: var(--surface-secondary, #f5f7f6);
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .education-note {
+            margin-top: 24px;
+            padding: 18px;
+            border-radius: 10px;
+            background: var(--surface-secondary, #f5f7f6);
+        }
+
+        .education-note strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .education-note p {
+            margin-bottom: 0;
+        }
+
+        .next-topics {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .next-topic {
+            padding: 22px;
+            border: 1px solid var(--border-color, #e5e7eb);
+            border-radius: 12px;
+            background: var(--card-bg, #ffffff);
+        }
+
+        .next-topic h3 {
+            margin: 0 0 10px;
+        }
+
+        .next-topic p {
+            margin: 0;
+            line-height: 1.7;
+            color: var(--text-secondary, #777777);
+        }
+
+        @media (max-width: 1000px) {
+            .topic-navigation {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .education-intro,
+            .education-article {
+                padding: 20px;
+            }
+
+            .topic-navigation,
+            .next-topics {
+                grid-template-columns: 1fr;
+            }
+
+            .concept-table th,
+            .concept-table td {
+                padding: 10px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="container">
 
-    <!-- SIDEBAR -->
-
+    <!-- MENU LATERAL -->
     <aside class="sidebar">
-
-        <h2 class="logo">Finance</h2>
+        
+        <a href="index.html" class="logo" aria-label="Finance - início">
+            <span class="logo-icon" aria-hidden="true">
+                <span></span><span></span><span></span>
+            </span>
+            <span class="logo-name">Finance<span>.</span></span>
+        </a>
+        
 
         <nav>
             <a href="dashboard.html">Dashboard</a>
             <a href="controle.html">Controle</a>
             <a href="simulador.html">Simulador</a>
-            <a href="educacao.html">Educação</a>
+            <a href="educacao.html" class="active" aria-current="page">
+                Educação
+            </a>
         </nav>
-
     </aside>
 
-    <!-- MAIN -->
-
-    <main class="main">
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main education-library">
 
         <header class="header">
-            <h1>Educação Financeira</h1>
+            <div>
+                <h1>Educação Financeira</h1>
+                <p>Uma biblioteca para entender melhor o seu dinheiro.</p>
+            </div>
         </header>
 
-        <!-- CONTEÚDOS -->
+        <!-- APRESENTAÇÃO -->
+        <section class="education-intro">
+            <p class="eyebrow">Fundamentos financeiros</p>
 
-        <section class="cards">
+            <h2>Entenda seu dinheiro antes de fazê-lo crescer.</h2>
 
-            <div class="card">
-                <h3>Reserva de emergência</h3>
-
-                <p>
-                    Aprenda a importância de manter uma reserva financeira
-                    para lidar com imprevistos sem comprometer seu orçamento.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Juros compostos</h3>
-
-                <p>
-                    Entenda como os juros podem fazer seu dinheiro crescer
-                    ao longo do tempo através da capitalização.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Renda fixa</h3>
-
-                <p>
-                    Conheça investimentos como CDB, Tesouro Direto e outros
-                    produtos de renda fixa.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Diversificação</h3>
-
-                <p>
-                    Entenda como distribuir seus investimentos entre
-                    diferentes ativos pode ajudar no gerenciamento de riscos.
-                </p>
-            </div>
-
+            <p>
+                Educação financeira começa com o entendimento de como o
+                dinheiro entra, como é utilizado e o que você possui.
+                Nesta biblioteca, você encontrará explicações diretas,
+                exemplos cotidianos e conceitos organizados para consulta.
+            </p>
         </section>
 
-        <!-- ARTIGOS -->
-
-        <section class="form-section">
-
-            <h2>Conceitos básicos</h2>
-
-            <div class="form">
-
-                <h3>Orçamento pessoal</h3>
-
+        <!-- ÍNDICE -->
+        <section>
+            <div class="section-heading">
+                <h2>Fundamentos do dinheiro</h2>
                 <p>
-                    O orçamento pessoal permite acompanhar quanto dinheiro
-                    entra e quanto sai todos os meses, ajudando na organização
-                    das finanças.
+                    Consulte diretamente o conceito que deseja compreender.
                 </p>
-
-                <h3>Reserva de emergência</h3>
-
-                <p>
-                    A reserva de emergência é destinada a situações
-                    inesperadas, como despesas médicas, manutenção ou perda
-                    temporária de renda.
-                </p>
-
-                <h3>Investimentos</h3>
-
-                <p>
-                    Antes de investir, é importante conhecer seu objetivo,
-                    prazo e tolerância a riscos. Diferentes investimentos
-                    possuem características e riscos diferentes.
-                </p>
-
             </div>
 
+            <nav class="topic-navigation" aria-label="Índice de conceitos">
+
+                <a class="topic-link" href="#receitas">
+                    <span class="topic-icon">💰</span>
+                    <strong>Receitas</strong>
+                    <span>O dinheiro que entra.</span>
+                </a>
+
+                <a class="topic-link" href="#despesas">
+                    <span class="topic-icon">💳</span>
+                    <strong>Despesas</strong>
+                    <span>O dinheiro que sai.</span>
+                </a>
+
+                <a class="topic-link" href="#saldo">
+                    <span class="topic-icon">🧮</span>
+                    <strong>Saldo</strong>
+                    <span>A diferença entre entradas e saídas.</span>
+                </a>
+
+                <a class="topic-link" href="#patrimonio">
+                    <span class="topic-icon">🏦</span>
+                    <strong>Patrimônio</strong>
+                    <span>O que você possui, descontando suas dívidas.</span>
+                </a>
+
+            </nav>
+        </section>
+
+        <!-- 1. RECEITAS -->
+        <article class="education-article" id="receitas">
+            <span class="article-label">Conceito 01</span>
+
+            <h2>💰 O que são receitas?</h2>
+
+            <p>
+                Receitas são os valores que entram no seu orçamento durante
+                determinado período. Elas representam o dinheiro recebido
+                e podem ter diferentes origens.
+            </p>
+
+            <h3>Exemplos de receitas</h3>
+
+            <ul>
+                <li><strong>Salário:</strong> remuneração recebida pelo trabalho.</li>
+                <li><strong>Trabalho autônomo:</strong> pagamentos por serviços prestados.</li>
+                <li><strong>Aluguel recebido:</strong> valor pago por alguém pelo uso de um imóvel seu.</li>
+                <li><strong>Rendimentos:</strong> valores gerados por determinados investimentos.</li>
+                <li><strong>Vendas:</strong> dinheiro recebido pela venda de produtos ou bens.</li>
+            </ul>
+
+            <h3>Receita bruta e receita líquida</h3>
+
+            <p>
+                A receita bruta corresponde ao valor antes dos descontos
+                aplicáveis. Já a receita líquida considera os descontos
+                pertinentes, como determinados impostos e contribuições.
+                No planejamento pessoal, é importante distinguir o salário
+                bruto do valor efetivamente recebido.
+            </p>
+
+            <div class="example-box">
+                <h3>Exemplo prático</h3>
+
+                <p>Salário bruto: R$ 2.500,00</p>
+                <p>Descontos: R$ 300,00</p>
+                <p><strong>Salário líquido: R$ 2.200,00</strong></p>
+
+                <p>
+                    Para organizar as despesas do mês, o valor líquido
+                    costuma ser a referência mais útil, pois representa
+                    o dinheiro disponível após os descontos informados.
+                </p>
+            </div>
+
+            <h3>Por que conhecer suas receitas?</h3>
+
+            <p>
+                Saber quanto você realmente recebe ajuda a definir limites
+                de gastos, avaliar compromissos financeiros e evitar que
+                as despesas ultrapassem os recursos disponíveis.
+            </p>
+        </article>
+
+        <!-- 2. DESPESAS -->
+        <article class="education-article" id="despesas">
+            <span class="article-label">Conceito 02</span>
+
+            <h2>💳 O que são despesas?</h2>
+
+            <p>
+                Despesas são os valores utilizados para pagar produtos,
+                serviços e compromissos financeiros. Elas incluem desde
+                necessidades básicas até gastos com lazer e compras pessoais.
+            </p>
+
+            <h3>Despesas fixas e variáveis</h3>
+
+            <div class="concept-table-wrapper">
+                <table class="concept-table">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Características</th>
+                            <th>Exemplos</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td><strong>Fixas</strong></td>
+                            <td>Costumam se repetir e podem ter valores previsíveis.</td>
+                            <td>Aluguel, mensalidade, assinatura.</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Variáveis</strong></td>
+                            <td>Mudam conforme o consumo ou a necessidade.</td>
+                            <td>Energia, alimentação, transporte.</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Eventuais</strong></td>
+                            <td>Aparecem ocasionalmente e podem exigir planejamento.</td>
+                            <td>Manutenção, reparos, despesas inesperadas.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Necessidades e desejos</h3>
+
+            <p>
+                Outra forma de analisar as despesas é distinguir necessidades
+                de desejos. Moradia, alimentação e transporte essencial são
+                exemplos de necessidades. Compras não essenciais e determinados
+                gastos de lazer podem ser classificados como desejos.
+            </p>
+
+            <p>
+                Essa distinção depende da realidade de cada pessoa. O objetivo
+                não é eliminar todo gasto com lazer, mas compreender prioridades
+                e decidir como distribuir o dinheiro.
+            </p>
+
+            <div class="example-box">
+                <h3>Exemplo prático</h3>
+
+                <p>Moradia: R$ 800,00</p>
+                <p>Alimentação: R$ 450,00</p>
+                <p>Transporte: R$ 200,00</p>
+                <p>Lazer: R$ 150,00</p>
+
+                <p><strong>Total de despesas: R$ 1.600,00</strong></p>
+
+                <p>
+                    Ao registrar esses gastos, fica mais fácil identificar
+                    quanto cada categoria representa no orçamento.
+                </p>
+            </div>
+
+            <h3>Por que registrar as despesas?</h3>
+
+            <p>
+                Registrar os gastos ajuda a identificar cobranças recorrentes,
+                compras por impulso e categorias que consomem uma parcela
+                significativa da renda. Essa visão permite tomar decisões
+                com base nos números, e não apenas na impressão de quanto
+                dinheiro foi gasto.
+            </p>
+        </article>
+
+        <!-- 3. SALDO -->
+        <article class="education-article" id="saldo">
+            <span class="article-label">Conceito 03</span>
+
+            <h2>🧮 O que é saldo?</h2>
+
+            <p>
+                Saldo é o resultado obtido ao comparar as receitas e despesas
+                de um período. Ele ajuda a entender se o dinheiro recebido
+                foi suficiente para cobrir os gastos considerados.
+            </p>
+
+            <div class="formula-box">
+                Saldo = Receitas − Despesas
+            </div>
+
+            <h3>Saldo positivo</h3>
+
+            <p>
+                Acontece quando as receitas são maiores do que as despesas.
+                Isso indica que sobrou dinheiro naquele período, antes de
+                considerar outros compromissos que ainda não foram registrados.
+            </p>
+
+            <h3>Saldo negativo</h3>
+
+            <p>
+                Acontece quando as despesas ultrapassam as receitas.
+                Essa diferença pode exigir o uso de recursos acumulados
+                ou resultar em dívidas, caso não exista dinheiro disponível.
+            </p>
+
+            <h3>Saldo zero</h3>
+
+            <p>
+                Ocorre quando as receitas e despesas possuem o mesmo valor.
+                Todo o dinheiro recebido foi destinado aos gastos considerados,
+                sem sobra naquele período.
+            </p>
+
+            <div class="example-box">
+                <h3>Exemplo prático</h3>
+
+                <p>Receitas mensais: R$ 2.200,00</p>
+                <p>Despesas mensais: R$ 1.600,00</p>
+                <p><strong>Saldo mensal: R$ 600,00</strong></p>
+
+                <p>
+                    Nesse exemplo, sobraram R$ 600,00 no período analisado.
+                    Esse valor pode ser destinado a objetivos financeiros,
+                    desde que os demais compromissos também estejam considerados.
+                </p>
+            </div>
+
+            <h3>Saldo não é a mesma coisa que patrimônio</h3>
+
+            <p>
+                O saldo normalmente se refere à diferença entre entradas e
+                saídas de um período ou à quantia disponível em uma conta.
+                O patrimônio considera os bens e recursos que uma pessoa
+                possui, descontadas suas obrigações financeiras.
+            </p>
+
+            <p>
+                Uma pessoa pode ter saldo positivo neste mês e, ainda assim,
+                possuir dívidas elevadas. Por isso, os dois conceitos devem
+                ser analisados separadamente.
+            </p>
+        </article>
+
+        <!-- 4. PATRIMÔNIO -->
+        <article class="education-article" id="patrimonio">
+            <span class="article-label">Conceito 04</span>
+
+            <h2>🏦 O que é patrimônio?</h2>
+
+            <p>
+                Patrimônio é o conjunto de bens e recursos que uma pessoa
+                possui, considerando também suas obrigações financeiras.
+                Para entender a situação patrimonial, é importante distinguir
+                ativos, passivos e patrimônio líquido.
+            </p>
+
+            <h3>Ativos: o que você possui</h3>
+
+            <p>
+                Ativos são recursos e bens que possuem valor econômico.
+                Podem incluir dinheiro em conta, investimentos, imóveis
+                e veículos.
+            </p>
+
+            <h3>Passivos: o que você deve</h3>
+
+            <p>
+                Passivos representam obrigações financeiras, como saldos
+                de empréstimos, financiamentos e outras dívidas.
+            </p>
+
+            <h3>Patrimônio líquido</h3>
+
+            <p>
+                É a diferença entre o valor dos ativos e o valor dos passivos.
+                Ele oferece uma visão mais completa da posição patrimonial
+                do que observar apenas o dinheiro disponível em conta.
+            </p>
+
+            <div class="formula-box">
+                Patrimônio líquido = Ativos − Passivos
+            </div>
+
+            <div class="example-box">
+                <h3>Exemplo prático</h3>
+
+                <p>Dinheiro e investimentos: R$ 8.000,00</p>
+                <p>Veículo: R$ 20.000,00</p>
+                <p><strong>Total de ativos: R$ 28.000,00</strong></p>
+
+                <p>Dívidas e financiamento pendente: R$ 7.000,00</p>
+
+                <p>
+                    <strong>Patrimônio líquido: R$ 21.000,00</strong>
+                </p>
+
+                <p>
+                    O cálculo considera os valores ilustrativos informados
+                    e não inclui outros bens ou obrigações.
+                </p>
+            </div>
+
+            <h3>Por que acompanhar seu patrimônio?</h3>
+
+            <p>
+                Acompanhar o patrimônio ao longo do tempo ajuda a compreender
+                se seus recursos estão crescendo, se as dívidas estão diminuindo
+                e como suas decisões financeiras afetam sua situação geral.
+            </p>
+
+            <p>
+                O patrimônio pode mudar com novas economias, pagamentos de
+                dívidas, valorização ou desvalorização de bens e outros eventos.
+                Por isso, o saldo bancário sozinho não conta toda a história.
+            </p>
+        </article>
+
+        <!-- RESUMO -->
+        <section class="education-article">
+            <span class="article-label">Resumo dos fundamentos</span>
+
+            <h2>Como os quatro conceitos se relacionam</h2>
+
+            <p>
+                Receitas mostram o dinheiro que entra. Despesas mostram
+                como ele é utilizado. O saldo revela a diferença entre
+                entradas e saídas de determinado período. O patrimônio
+                oferece uma visão mais ampla dos bens, recursos e dívidas.
+            </p>
+
+            <div class="concept-table-wrapper">
+                <table class="concept-table">
+                    <thead>
+                        <tr>
+                            <th>Conceito</th>
+                            <th>Pergunta respondida</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Receitas</td>
+                            <td>Quanto dinheiro entrou?</td>
+                        </tr>
+
+                        <tr>
+                            <td>Despesas</td>
+                            <td>Quanto dinheiro saiu?</td>
+                        </tr>
+
+                        <tr>
+                            <td>Saldo</td>
+                            <td>Quanto sobrou ou faltou no período?</td>
+                        </tr>
+
+                        <tr>
+                            <td>Patrimônio líquido</td>
+                            <td>Qual é a diferença entre o que possuo e o que devo?</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="education-note">
+                <strong>Como isso se conecta ao Finance?</strong>
+
+                <p>
+                    O Dashboard permite visualizar os resultados das suas
+                    movimentações registradas, enquanto o Controle é utilizado
+                    para organizar receitas e despesas. Esses registros ajudam
+                    a compreender o orçamento, mas não representam necessariamente
+                    todo o patrimônio da pessoa.
+                </p>
+            </div>
+        </section>
+
+        <!-- PRÓXIMOS ASSUNTOS -->
+        <section>
+            <div class="section-heading">
+                <h2>Outros assuntos da biblioteca</h2>
+                <p>
+                    Além dos fundamentos, a educação financeira inclui
+                    outros temas importantes para consulta.
+                </p>
+            </div>
+
+            <div class="next-topics">
+
+                <article class="next-topic">
+                    <h3>📋 Organização do orçamento</h3>
+                    <p>
+                        Como categorizar gastos, analisar despesas recorrentes
+                        e compreender a distribuição da renda.
+                    </p>
+                </article>
+
+                <article class="next-topic">
+                    <h3>🛟 Reserva de emergência</h3>
+                    <p>
+                        Finalidade da reserva, critérios para estimar seu tamanho
+                        e características importantes para guardar esse dinheiro.
+                    </p>
+                </article>
+
+                <article class="next-topic">
+                    <h3>💳 Dívidas e crédito</h3>
+                    <p>
+                        Como funcionam juros, parcelamentos, empréstimos
+                        e o custo do crédito.
+                    </p>
+                </article>
+
+                <article class="next-topic">
+                    <h3>📈 Introdução aos investimentos</h3>
+                    <p>
+                        Conceitos de inflação, Selic, CDI, liquidez,
+                        rentabilidade e risco.
+                    </p>
+                </article>
+
+            </div>
         </section>
 
     </main>
-
 </div>
-
-<script src="script.js"></script>
 
 </body>
 </html>

@@ -14,12 +14,17 @@
 
     <aside class="sidebar">
 
-        <h2 class="logo">Finance</h2>
+        <a href="index.html" class="logo" aria-label="Finance - início">
+            <span class="logo-icon" aria-hidden="true">
+                <span></span><span></span><span></span>
+            </span>
+            <span class="logo-name">Finance<span>.</span></span>
+        </a>
 
         <nav>
             <a href="dashboard.html">Dashboard</a>
             <a href="controle.html">Controle</a>
-            <a href="simulador.html">Simulador</a>
+            <a href="simulador.html" class="active">Simulador</a>
             <a href="educacao.html">Educação</a>
         </nav>
 
@@ -65,28 +70,30 @@
 
         </section>
 
-        <section class="cards">
+        <section>
 
-            <div class="card">
-                <h3>Valor investido</h3>
-                <p id="valorInvestido">R$ 0</p>
-            </div>
+            <div class="cards centralizado">
+                <div class="card">
+                    <h3>Valor investido</h3>
+                    <p id="valorInvestido">R$ 0</p>
+                </div>
 
-            <div class="card">
-                <h3>Rendimentos</h3>
-                <p id="rendimentos">R$ 0</p>
-            </div>
+                <div class="card">
+                    <h3>Rendimentos</h3>
+                    <p id="rendimentos">R$ 0</p>
+                </div>
 
-            <div class="card destaque">
-                <h3>Valor final</h3>
-                <p id="valorFinal">R$ 0</p>
+                <div class="card destaque">
+                    <h3>Valor final</h3>
+                    <p id="valorFinal">R$ 0</p>
+                </div>
             </div>
 
         </section>
 
         <section class="charts">
 
-            <div class="chart-box">
+            <div class="chart-box chart-wide">
 
                 <h3>Evolução do investimento</h3>
 

@@ -689,6 +689,8 @@ function criarGraficoGastos(
 
                 maintainAspectRatio: false,
 
+                aspectRatio: 1,
+
                 plugins: {
 
                     legend: {
@@ -1049,6 +1051,8 @@ criarGraficos();
  * O elemento #dashboard contém os indicadores,
  * gráficos e movimentações.
  */
+
+
 async function capturarDashboard() {
     const dashboard = document.getElementById("dashboard");
 
@@ -1057,71 +1061,26 @@ async function capturarDashboard() {
     }
 
     if (typeof html2canvas === "undefined") {
-        throw new Error("A biblioteca html2canvas não foi carregada.");
+        throw new Error("html2canvas não foi carregado.");
     }
 
     await document.fonts.ready;
 
-    // Cria uma cópia exclusiva para exportação.
-    const relatorio = dashboard.cloneNode(true);
+    // Área isolada para montar o relatório.
+    const relatorio = document.createElement("div");
+    relatorio.className = "export-report";
 
-        /*
-    * Copia os desenhos dos gráficos Chart.js
-    * para os canvases da versão exportada.
-    */
-
-    const canvasesOriginais = dashboard.querySelectorAll("canvas");
-    const canvasesCopiados = relatorio.querySelectorAll("canvas");
-
-    canvasesOriginais.forEach((original, indice) => {
-        const copia = canvasesCopiados[indice];
-
-        if (!copia) return;
-
-        // Preserva as dimensões originais do canvas.
-        copia.width = original.width;
-        copia.height = original.height;
-
-        copia.style.width = original.style.width;
-        copia.style.height = original.style.height;
-
-        // Copia o gráfico sem deformar sua proporção.
-        const contexto = copia.getContext("2d");
-
-        if (contexto) {
-            contexto.drawImage(
-                original,
-                0,
-                0,
-                original.width,
-                original.height
-            );
-        }
-    });
-
-    // Remove filtros e últimas movimentações.
-    relatorio.querySelectorAll(".form-section").forEach(secao => {
-        secao.remove();
-    });
-
-    // Remove botões que possam estar dentro do Dashboard.
-    relatorio.querySelectorAll(
-        ".buttons, .export-actions, button"
-    ).forEach(elemento => {
-        elemento.remove();
-    });
-
-    // Cria a identidade visual do relatório.
-    const cabecalho = document.createElement("div");
+    // Cabeçalho Finance.
+    const cabecalho = document.createElement("header");
     cabecalho.className = "report-header";
 
     cabecalho.innerHTML = `
         <div class="report-brand">
-            <span class="report-logo" aria-hidden="true">
+            <div class="report-logo" aria-hidden="true">
                 <span></span>
                 <span></span>
                 <span></span>
-            </span>
+            </div>
 
             <div>
                 <h1>Finance<span>.</span></h1>
@@ -1135,23 +1094,47 @@ async function capturarDashboard() {
         </div>
     `;
 
-    relatorio.prepend(cabecalho);
+    relatorio.appendChild(cabecalho);
 
-    // Moldura branca e espaçamento do relatório.
-    const moldura = document.createElement("div");
-    moldura.className = "report-frame";
-    moldura.appendChild(relatorio);
+    // Copia os indicadores.
+    const cards = dashboard.querySelector(".cards");
 
-    // Renderiza fora da tela, sem modificar o layout original.
-    moldura.style.position = "fixed";
-    moldura.style.left = "-100000px";
-    moldura.style.top = "0";
-    moldura.style.width = "1200px";
-    moldura.style.padding = "0";
-    moldura.style.background = "#f3f6fb";
-    moldura.style.zIndex = "-1";
+    if (cards) {
+        relatorio.appendChild(cards.cloneNode(true));
+    }
 
-    document.body.appendChild(moldura);
+    // Copia os gráficos e seus títulos.
+    const secoesGraficos = dashboard.querySelectorAll(".charts");
+
+    secoesGraficos.forEach(secao => {
+        relatorio.appendChild(secao.cloneNode(true));
+    });
+
+    // Corrige os canvases copiados.
+    const originais = dashboard.querySelectorAll(".charts canvas");
+    const copiados = relatorio.querySelectorAll(".charts canvas");
+
+    originais.forEach((original, indice) => {
+        const copia = copiados[indice];
+
+        if (!copia) return;
+
+        copia.width = original.width;
+        copia.height = original.height;
+
+        const contexto = copia.getContext("2d");
+
+        if (contexto) {
+            contexto.drawImage(original, 0, 0);
+        }
+    });
+
+    // Monta a área de exportação fora da tela.
+    const area = document.createElement("div");
+    area.className = "export-stage";
+    area.appendChild(relatorio);
+
+    document.body.appendChild(area);
 
     try {
         await new Promise(resolve => {
@@ -1160,7 +1143,7 @@ async function capturarDashboard() {
             });
         });
 
-        return await html2canvas(moldura, {
+        return await html2canvas(relatorio, {
             scale: 2,
             backgroundColor: "#f3f6fb",
             useCORS: true,
@@ -1169,7 +1152,7 @@ async function capturarDashboard() {
             windowWidth: 1200
         });
     } finally {
-        moldura.remove();
+        area.remove();
     }
 }
 

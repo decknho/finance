@@ -1365,149 +1365,183 @@ footer p {
 }
 
 
+
 /* ========================================
-   RELATÓRIO FINANCE — EXPORTAÇÃO
+   FINANCE — RELATÓRIO DE EXPORTAÇÃO
 ======================================== */
 
-.report-frame {
+.export-stage {
+    position: fixed;
+    left: -15000px;
+    top: 0;
+    width: 1256px;
     padding: 28px;
     background: #f3f6fb;
-    box-sizing: border-box;
+    z-index: -1;
 }
 
-.report-frame #dashboard {
-    width: 100%;
-    padding: 24px;
+.export-report {
+    width: 1200px;
+    padding: 28px;
+    box-sizing: border-box;
     background: #ffffff;
     border: 1px solid #e5ebf2;
     border-radius: 16px;
-    box-sizing: border-box;
+    color: #10243a;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.report-header {
+.export-report .report-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    margin-bottom: 24px;
-    padding: 0 0 22px;
+    margin-bottom: 26px;
+    padding-bottom: 22px;
     border-bottom: 2px solid #e5ebf2;
 }
 
-.report-brand {
+.export-report .report-brand {
     display: flex;
     align-items: center;
-    gap: 13px;
+    gap: 12px;
 }
 
-.report-logo {
+.export-report .report-logo {
     display: flex;
     align-items: end;
     gap: 3px;
     height: 30px;
-    padding: 4px;
 }
 
-.report-logo span {
-    display: block;
+.export-report .report-logo span {
     width: 8px;
-    border-radius: 3px 3px 1px 1px;
+    border-radius: 3px;
     background: #20bd91;
 }
 
-.report-logo span:nth-child(1) {
+.export-report .report-logo span:nth-child(1) {
     height: 11px;
 }
 
-.report-logo span:nth-child(2) {
+.export-report .report-logo span:nth-child(2) {
     height: 19px;
 }
 
-.report-logo span:nth-child(3) {
+.export-report .report-logo span:nth-child(3) {
     height: 27px;
 }
 
-.report-brand h1 {
+.export-report .report-brand h1 {
+    margin: 0;
     font-size: 25px;
-    line-height: 1.2;
     color: #10243a;
 }
 
-.report-brand h1 span {
+.export-report .report-brand h1 span {
     color: #20bd91;
 }
 
-.report-brand p {
-    margin-top: 4px;
-    color: #68778b;
+.export-report .report-brand p {
+    margin: 5px 0 0;
     font-size: 12px;
+    color: #68778b;
 }
 
-.report-date {
+.export-report .report-date {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 3px;
+    gap: 4px;
 }
 
-.report-date span {
-    color: #68778b;
+.export-report .report-date span {
     font-size: 11px;
+    color: #68778b;
 }
 
-.report-date strong {
-    color: #10243a;
+.export-report .report-date strong {
     font-size: 13px;
 }
 
-/* Espaçamento dos indicadores */
+/* Indicadores */
 
-.report-frame .cards {
+.export-report .cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
-    margin-bottom: 26px;
+    margin-bottom: 24px;
 }
 
-.report-frame .card {
+.export-report .card {
+    min-width: 0;
     padding: 22px;
-    box-shadow: none;
-    border: 1px solid #e5ebf2;
-    border-radius: 12px;
-}
-
-/* Gráficos com respiro */
-
-.report-frame .charts {
-    gap: 22px;
-    margin-bottom: 26px;
-}
-
-.report-frame .chart-box {
-    padding: 22px;
+    background: #ffffff;
     border: 1px solid #e5ebf2;
     border-radius: 12px;
     box-shadow: none;
-    break-inside: avoid;
 }
 
-.report-frame .chart-placeholder {
+/* Gráficos */
+
+.export-report .charts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+    align-items: stretch;
+}
+
+.export-report .chart-box {
+    min-width: 0;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e5ebf2;
+    border-radius: 12px;
+    box-shadow: none;
+}
+
+.export-report .chart-placeholder {
+    position: relative;
+    height: 320px;
+    margin-top: 16px;
     background: #f8fafc;
     border-radius: 10px;
-    margin-top: 18px;
 }
 
-.report-frame .chart-wide .chart-placeholder {
-    height: 340px;
-}
-
-/* Preserva a proporção do gráfico de rosca na exportação */
-
-.report-frame #graficoGastos {
+.export-report .chart-placeholder canvas {
+    display: block;
     width: 100% !important;
     height: 100% !important;
 }
 
-.report-frame .chart-box:first-child .chart-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Evolução do saldo em largura total */
+
+.export-report .chart-wide {
+    grid-column: 1 / -1;
+    width: 100%;
+}
+
+.export-report .chart-wide .chart-placeholder {
+    height: 340px;
+}
+
+/* Gráfico de distribuição de gastos */
+#dashboard #graficoGastos {
+    max-width: 100%;
+}
+
+#dashboard .chart-box:first-child .chart-placeholder {
+    min-height: 320px;
+    height: 320px;
+}
+
+/* Área usada na exportação */
+.export-report .chart-box:first-child .chart-placeholder {
+    height: 320px;
+    min-height: 320px;
+}
+
+.export-report #graficoGastos {
+    max-width: 100%;
 }
